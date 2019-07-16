@@ -198,6 +198,23 @@
     return rowCount;
 }
 
+- (NSNumber*) getNumLocations
+{
+    __block NSNumber* rowCount = nil;
+    
+    [queue inTransaction:^(FMDatabase *database, BOOL *rollback) {
+        NSString *sql = @"SELECT COUNT(*) FROM " @LC_TABLE_NAME;
+        
+        FMResultSet *rs = [database executeQuery:sql];
+        if ([rs next]) {
+            rowCount = [NSNumber numberWithInt:[rs intForColumnIndex:0]];
+        }
+        [rs close];
+    }];
+    
+    return rowCount;
+}
+
 - (NSNumber*) persistLocation:(MAURLocation*)location intoDatabase:(FMDatabase*)database
 {
     NSNumber* locationId = nil;
@@ -357,10 +374,9 @@
 - (BOOL) deleteAllLocations:(NSError * __autoreleasing *)outError
 {
     __block BOOL success;
-    NSString *sql = @"UPDATE " @LC_TABLE_NAME @" SET " @LC_COLUMN_NAME_STATUS @" = ?";
-
+    NSString *sql = @"DELETE FROM " @LC_TABLE_NAME;
     [queue inDatabase:^(FMDatabase *database) {
-        if ([database executeUpdate:sql, [NSString stringWithFormat:@"%ld", MAURLocationDeleted]]) {
+        if ([database executeStatements:sql]) {
             success = YES;
         } else {
             int errorCode = [database lastErrorCode];

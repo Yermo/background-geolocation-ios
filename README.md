@@ -51,3 +51,7 @@ architecture arm64
     size 2498320
     align 2^3 (8)
 ```
+
+To find the correct generated library look in:
+
+$HOME/Library/Developer/Xcode/DerivedData/BackgroundGeolocation-<gobbledegook>/Build/Products/Debug-universal

@@ -21,6 +21,7 @@
 - (NSArray<MAURLocation*>*) getLocationsForSync;
 - (NSArray<MAURLocation*>*) getValidLocations;
 - (NSNumber*) getLocationsForSyncCount;
+- (NSNumber*) getNumLocations;
 - (NSNumber*) persistLocation:(MAURLocation*)location;
 - (NSNumber*) persistLocation:(MAURLocation*)location limitRows:(NSInteger)maxRows;
 - (BOOL) deleteLocation:(NSNumber*)locationId error:(NSError * __autoreleasing *)outError;
